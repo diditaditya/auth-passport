@@ -61,25 +61,21 @@ let userControl = {
       res.send('username, password, role must not be empty');
     }
   },
-  signin: (username, password, next) => {
-    let findUser = User.findOne({username: username}, (err, user) => {
-      if (err || user === null) {
-        next(null, {message: 'username is not found'});
-      } else {
-        bcrypt.compare(password, user.password, (err, resolve) => {
-          if (err) {
-            next(err);
-          } else {
-            if (resolve) {
-              let token = jwt.sign(user, pvtKey, {expiresIn: '1h'});
-              next(null, {message: 'successfully signed in', user:user, token:token});
-            } else {
-              next(null, {message: 'password is incorrect'});
-            }
-          }
-        });
-      }
-    });
+  signin: (req, res) => {
+    if (req.user.message) {
+      res.send(req.user);
+    } else if (req.user.username) {
+      let username = req.user.username;
+      let role = req.user.role;
+      let user = {
+        username: username,
+        role: role
+      };
+      let token = jwt.sign(user, pvtKey, {expiresIn: '1h'});
+      res.send({message: 'sign in is successful', user: user, token: token});
+    } else {
+      res.send({message: 'incorrect username or passoword'});
+    }
   }
 }
 

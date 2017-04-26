@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const userControl = require('./controllers/user.js');
+const userAuth = require('./helpers/passport.js');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/authPassport');
@@ -13,7 +14,7 @@ var index = require('./routes/index');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-passport.use(new Strategy(userControl.signin));
+passport.use(new Strategy(userAuth));
 
 app.use(passport.initialize());
 

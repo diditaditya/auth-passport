@@ -8,9 +8,7 @@ router.get('/', (req, res) => {
   res.send('Up and running');
 });
 
-router.post('/api/signin', passport.authenticate('local', {session: false}), (req, res) => {
-  res.json(req.user);
-});
+router.post('/api/signin', passport.authenticate('local', {session: false}), userControl.signin);
 
 router.post('/api/users', userControl.create);
 
