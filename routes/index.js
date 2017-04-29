@@ -9,7 +9,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/api/signin', passport.authenticate('local', {session: false}), userControl.signin);
-
 router.post('/api/users', userControl.create);
 
 module.exports = router;
